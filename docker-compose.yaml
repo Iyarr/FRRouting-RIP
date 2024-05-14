@@ -111,7 +111,7 @@ services:
         limits:
           cpus: "1.0"
         reservations:
-          memory: 512M
+          memory: 128M
 
   host1:
     container_name: host1
@@ -129,7 +129,7 @@ services:
         limits:
           cpus: "1.0"
         reservations:
-          memory: 512M
+          memory: 128M
 
 networks:
   network0:

@@ -11,9 +11,11 @@ RUN apt install -y vim \
         # traceroute command
         traceroute \
         # wiresharkのコマンドライン版
-        tshark
+        tshark \
+        # 改行文字の変換
+        dos2unix
 
-COPY ./init.sh /home/init.sh
-RUN chmod +x /home/init.sh
+COPY ./init.sh /home/
+RUN chmod +x /home/init.sh && dos2unix /home/init.sh
 
 CMD ["/home/init.sh"]

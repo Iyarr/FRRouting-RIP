@@ -7,11 +7,11 @@ echo "hostname $HOSTNAME" >> /etc/frr/vtysh.conf
 
 /etc/init.d/frr start
 
-touch /home/frr.init
-echo "router rip
-version $RIP_VERSION" >> /home/frr.init
+echo "configure terminal
+router rip
+version $RIP_VERSION" >> /home/commands
 # ホスト内のIFとIPアドレスを取得
-ip address show | grep "scope global" | \
+ip address show | grep "scope global" | \ 
 while read line; do
   # ブロードキャストアドレスを取得
   brd_address=$(echo "$line" | grep -oE 'brd\s[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')
@@ -20,13 +20,18 @@ while read line; do
   if [ "$brd_address" != "brd 10.0.0.255" ] && [ "$brd_address" != "brd 10.0.5.255" ]; then
     # インタフェース名を取得
     ifname=$(echo "$line" | grep -oE '[A-Za-z0-9]*$')
-    echo "network $ifname" >> /home/frr.init
-  else
-    echo "network $ifname" >> /home/frr.init
+    echo "network $ifname" >> /home/commands
   fi
 done
 
-vtysh -c "copy /home/frr.init running-config"
+echo "vtysh" > /home/frr.sh
+
+cat /home/commands | while read line; do
+  echo " -c '$line'"
+done
+
+chmod +x /home/frr.sh
+/home/frr.sh
 
 tail -f /dev/null
 

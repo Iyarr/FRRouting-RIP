@@ -4,11 +4,12 @@ RUN apt clean && apt update && apt upgrade -y
 
 # よく使うツール
 RUN apt install -y \
+        # ファイル編集
+        vim \
         # psコマンド
-        procps
-
-# ソースのインストール用ツール
-RUN apt install -y \
+        procps \
+        # 改行文字の変換
+        dos2unix \
         # Linux Standard Base（LSB）のバージョン情報を提供するためのツールらしい
         lsb-release \
         gnupg \
@@ -25,7 +26,8 @@ RUN echo deb '[signed-by=/usr/share/keyrings/frrouting.gpg]' https://deb.frrouti
 RUN apt update && apt install -y frr frr-pythontools
 # ここまで
 
-COPY ./init.sh /home/init.sh
-RUN chmod +x /home/init.sh
+COPY ./init.sh /home/
+RUN chmod +x /home/init.sh && dos2unix /home/init.sh
 
 CMD ["/home/init.sh"]
+#CMD ["tail","-f","/dev/null"]
