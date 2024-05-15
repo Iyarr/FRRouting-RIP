@@ -4,6 +4,10 @@ RUN apt clean && apt update && apt upgrade -y
 
 # よく使うツール
 RUN apt install -y \
+        # traceroute command
+        traceroute \
+        # ping command
+        iputils-ping \
         # ファイル編集
         vim \
         # psコマンド

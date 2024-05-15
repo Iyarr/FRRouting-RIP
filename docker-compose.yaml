@@ -120,10 +120,10 @@ services:
     tty: true
     networks:
       #  network3がeth0に割り当てられる
-      network3:
-        ipv4_address: 10.0.3.10
+      network5:
+        ipv4_address: 10.0.5.10
     environment:
-      - DEFAULT_IP=10.0.3.2
+      - DEFAULT_IP=10.0.5.2
     deploy:
       resources:
         limits:
