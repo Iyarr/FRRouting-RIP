@@ -9,13 +9,16 @@ echo "hostname $HOSTNAME" >> /etc/frr/vtysh.conf
 
 echo "configure terminal
 router rip
-version $RIP_VERSION" > /home/commands
+version $RIP_VERSION
+timers basic 10 60 40" > /home/commands # 実験のため通常よりタイマーを早くする
+
 # ホスト内のIFとIPアドレスを取得
 ip address show | grep "scope global" | while read line; do
   # それぞれのインタフェースでRIPを有効化
   ifname=$(echo "$line" | grep -oE '[A-Za-z0-9]*$')
   echo "network $ifname" >> /home/commands
 done
+# コンテナごとのRIPの設定コマンドはここでif文で分岐して設定したほうがいいかも
 
 echo "#! /bin/bash 
 vtysh \\" > /home/frr.sh
