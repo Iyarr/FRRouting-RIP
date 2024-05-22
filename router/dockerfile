@@ -4,6 +4,8 @@ RUN apt clean && apt update && apt upgrade -y
 
 # よく使うツール
 RUN apt install -y \
+        # packet capture command
+        tshark \
         # traceroute command
         traceroute \
         # ping command
