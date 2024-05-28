@@ -6,7 +6,6 @@ services:
     tty: true
     environment:
       - HOSTNAME=router0
-      - RIP_VERSION=1
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
@@ -31,7 +30,6 @@ services:
     tty: true
     environment:
       - HOSTNAME=router1
-      - RIP_VERSION=1
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
@@ -54,7 +52,6 @@ services:
     tty: true
     environment:
       - HOSTNAME=router2
-      - RIP_VERSION=1
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
@@ -77,7 +74,6 @@ services:
     tty: true
     environment:
       - HOSTNAME=router3
-      - RIP_VERSION=1
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
