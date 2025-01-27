@@ -9,7 +9,7 @@ echo "hostname $HOSTNAME" >> /etc/frr/vtysh.conf
 
 echo "configure terminal
 router rip
-version $RIP_VERSION
+version 1
 timers basic 10 60 40" > /home/commands # 実験のため通常よりタイマーを早くする
 
 # コンテナごとのRIPの設定コマンド
