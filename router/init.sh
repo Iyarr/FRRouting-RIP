@@ -12,23 +12,33 @@ router rip
 version $RIP_VERSION
 timers basic 10 60 40" > /home/commands # 実験のため通常よりタイマーを早くする
 
-# ホスト内のIFとIPアドレスを取得
-ip address show | grep "scope global" | while read line; do
-  # それぞれのインタフェースでRIPを有効化
-  ifname=$(echo "$line" | grep -oE '[A-Za-z0-9]*$')
-  echo "network $ifname" >> /home/commands
-done
-# コンテナごとのRIPの設定コマンドはここでif文で分岐して設定したほうがいいかも
+# コンテナごとのRIPの設定コマンド
+if [ "$HOSTNAME" == "router0" ]; then
+  echo "network 10.0.0.0/24
+network 10.0.1.0/24
+network 10.0.2.0/24" >> /home/commands
 
-echo "#! /bin/bash 
-vtysh \\" > /home/frr.sh
+elif  [ "$HOSTNAME" == "router1" ]; then
+  echo "network 10.0.1.0/24
+network 10.0.3.0/24" >> /home/commands
 
-cat /home/commands | while read line; do
-  echo " -c '$line' \\" >> /home/frr.sh
-done
+elif  [ "$HOSTNAME" == "router2" ]; then
+  echo "network 10.0.2.0/24
+network 10.0.4.0/24" >> /home/commands
 
-chmod +x /home/frr.sh
-/home/frr.sh
+elif  [ "$HOSTNAME" == "router3" ]; then
+    echo "network 10.0.3.0/24
+network 10.0.4.0/24
+network 10.0.5.0/24" >> /home/commands
+fi
+
+vtysh="vtysh"
+
+while read line; do
+  vtysh="$vtysh -c '$line'"
+done < /home/commands
+
+eval $vtysh
 
 tail -f /dev/null
 
